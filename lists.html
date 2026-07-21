@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
+  <title>lists</title>
   <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
 </head>
 <body>
 
@@ -17,8 +18,28 @@
 
   <div class="page-content">
     <h1>Lists</h1>
-    <p>Stuff to remember</p>
-  </div>
+
+    <div class="top-row">
+       <select id="listSelect"></select>
+       <button id="settingsBtn">Settings</button>
+    </div>
+
+    <input id="newItemInput" type="text" placeholder="Type then enter">
+
+    <ul id="itemsList"></ul>
+
+    <button id="undoBtn" class="undo-btn hidden">Undo</button>
+
+    <dialog id="settingsDialog">
+       <h2>Edit Lists</h2>
+
+       <div id="listsManager"></div>
+
+       <input id="newListName" type="text" placeholder="New list name">
+       <button id="addListBtn">Add List</button>
+       <button id="closeDialogBtn">Close</button>
+    </dialog>
+    </div>
 
 </body>
 </html>
