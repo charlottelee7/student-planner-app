@@ -1,7 +1,7 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  background: #fffaff;
+  background: #ffe6ff;
 }
 
 .navbar {
@@ -9,10 +9,11 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  background: #f763ff;
+  background: #ff6dff;
   display: flex;
   justify-content: space-around;
   padding: 15px 0;
+  z-index: 1000;
 }
 
 .navbar a {
@@ -22,11 +23,12 @@ body {
 }
 
 .page-content {
-  padding-top: 80px;
+  padding-top: 90px;
   max-width: 400px;
   margin: 0 auto;
   padding-left: 20px;
   padding-right: 20px;
+  padding-bottom: 30px;
 }
 
 .top-row {
@@ -35,9 +37,29 @@ body {
   margin-bottom: 15px;
 }
 
-select, input, button {
-  padding: 10px;
+select,
+input,
+button,
+textarea {
   font-size: 16px;
+}
+
+button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  background: #ff92ff;
+  color: white;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 
 #listSelect {
@@ -46,7 +68,6 @@ select, input, button {
 
 #newItemInput {
   width: 100%;
-  box-sizing: border-box;
   margin-bottom: 15px;
 }
 
@@ -59,7 +80,7 @@ select, input, button {
   background: white;
   margin-bottom: 10px;
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -74,11 +95,27 @@ select, input, button {
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
+  position: relative;
+}
+
+.task-box.partial::before,
+.task-box.partial::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 2px;
+  background: black;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
 }
 
 .task-box.partial::before {
-  content: "/";
-  font-weight: bold;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.task-box.partial::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 .undo-btn {
@@ -86,10 +123,10 @@ select, input, button {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgb(238, 0, 255);
+  background: #ff88ff;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 12px 18px;
   animation: flash 0.5s alternate infinite;
 }
@@ -100,9 +137,32 @@ select, input, button {
 
 dialog {
   border: none;
-  border-radius: 12px;
-  padding: 20px;
-  width: 300px;
+  border-radius: 16px;
+  padding: 24px;
+  width: 340px;
+  max-width: calc(100vw - 32px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+dialog h2 {
+  margin-top: 0;
+  margin-bottom: 18px;
+}
+
+dialog input,
+dialog select,
+dialog textarea {
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+dialog textarea {
+  min-height: 90px;
+  resize: vertical;
 }
 
 .rename-input {
@@ -112,4 +172,137 @@ dialog {
 @keyframes flash {
   from { opacity: 1; }
   to { opacity: 0.4; }
+}
+
+.deadline-card {
+  background: white;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.deadline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.deadline-left {
+  flex: 1;
+}
+
+.deadline-title {
+  margin: 0;
+  font-size: 18px;
+}
+
+.deadline-title.important {
+  font-weight: 800;
+}
+
+.deadline-meta {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #555;
+}
+
+.deadline-description {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #777;
+}
+
+.category-tag {
+  display: inline-block;
+  color: white;
+  font-size: 12px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  margin-top: 8px;
+}
+
+.edit-btn {
+  background: #ffb4ff;
+  white-space: nowrap;
+}
+
+.dialog-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.dialog-buttons button {
+  flex: 1;
+  min-width: 100px;
+}
+
+.danger {
+  background: #d9534f;
+  color: white;
+}
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.check-row input {
+  width: auto;
+  margin: 0;
+}
+
+.category-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.category-row input[type="text"] {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.category-row input[type="color"] {
+  width: 46px;
+  height: 46px;
+  padding: 3px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: none;
+  cursor: pointer;
+}
+
+.new-category-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 14px;
+}
+
+.new-category-row input[type="text"] {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.new-category-row input[type="color"] {
+  width: 50px;
+  height: 46px;
+  padding: 3px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: none;
+  cursor: pointer;
+}
+
+.important-deadline {
+  outline: 2px solid red;
+  outline-offset: 0;
 }

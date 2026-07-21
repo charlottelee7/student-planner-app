@@ -3,21 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>deadlines</title>
+  <title>Calendar</title>
   <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
 </head>
 <body>
 
   <nav class="navbar">
     <a href="index.html">Home</a>
     <a href="lists.html">Lists</a>
-    <a href="deadlines.html">Deadlines</a>
+    <a href="deadlines.html" class="active">Calendar</a>
     <a href="timer.html">Timer</a>
   </nav>
 
   <div class="page-content">
-    <h1>Deadlines</h1>
-    <p>Add important stuff</p>
+    <h1>Calendar</h1>
+
+    <div class="top-row">
+      <button id="addDeadlineBtn">Add</button>
+      <button id="manageCategoriesBtn">Categories</button>
+    </div>
+
+    <div id="deadlinesList"></div>
+
+    <dialog id="deadlineDialog">
+      <h2 id="deadlineDialogTitle">Add Task</h2>
+
+      <input type="date" id="deadlineDate">
+      <input type="text" id="deadlineTitle" placeholder="Task title">
+
+      <label class="check-row">
+        <input type="checkbox" id="deadlineImportant">
+        Important
+      </label>
+
+      <select id="deadlineCategory"></select>
+
+      <textarea id="deadlineDescription" placeholder="Description"></textarea>
+
+      <div class="dialog-buttons">
+        <button id="saveDeadlineBtn">Save</button>
+        <button id="deleteDeadlineBtn" class="danger hidden">Delete</button>
+        <button id="closeDeadlineDialogBtn" type="button">Close</button>
+      </div>
+    </dialog>
+
+    <dialog id="categoriesDialog">
+      <h2>Edit Categories</h2>
+
+      <div id="categoriesManager"></div>
+
+      <div class="new-category-row">
+        <input type="text" id="newCategoryName" placeholder="New category name">
+        <input type="color" id="newCategoryColor" value="#ff0000">
+      </div>
+
+      <div class="dialog-buttons">
+        <button id="addCategoryBtn">Add Category</button>
+        <button id="closeCategoriesDialogBtn" type="button">Close</button>
+      </div>
+    </dialog>
   </div>
 
 </body>
