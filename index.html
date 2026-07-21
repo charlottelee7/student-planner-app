@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planner</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6c63ff">     
+</head>
+
+<body>
+    <h1>Planner</h1>
+
+    <div class="box">
+        <input id="taskInput" type="text" placeholder="Enter a task">
+        <input id="dateInput" type="date">
+        <button onclick="addTask()">Add task</button>
+    </div>
+
+    <h2>Tasks</h2>
+    <p id="timer">25:00</p>
+    <button onclick="startTimer()">Start</button>
+    <button onclick="resetTimer()">Reset</button>
+
+    <script src="app.js"></script>
+    <script>
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("service-worker.js");
+    }
+    </script>
+</body>
+</html>
