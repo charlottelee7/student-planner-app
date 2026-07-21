@@ -363,7 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
         card.className = "deadline-card";
 
         if (task.important) {
-        card.classList.add("important-deadline");
+          card.classList.add("important-deadline");
         }
 
         const header = document.createElement("div");
@@ -542,5 +542,435 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderCategoryOptions();
     renderDeadlineTasks();
+  }
+
+  // =========================
+  // TIMER PAGE
+  // =========================
+  const timerMode = document.getElementById("timerMode");
+
+  if (timerMode) {
+    let timerCategories = JSON.parse(localStorage.getItem("timerCategories")) || [
+      { id: 1, name: "Study", color: "#fd61fd" }
+    ];
+
+    let savedTimerSessions = JSON.parse(localStorage.getItem("savedTimerSessions")) || [];
+
+    let intervalId = null;
+    let isRunning = false;
+    let currentSeconds = 0;
+    let totalCountdownSeconds = 0;
+    let currentMode = "stopwatch";
+
+    let pomodoroEnabled = false;
+    let pomodoroWorkSeconds = 25 * 60;
+    let pomodoroBreakSeconds = 5 * 60;
+    let currentBreakSeconds = 0;
+    let isBreakActive = false;
+    let elapsedWorkSinceBreak = 0;
+
+    const timerCategory = document.getElementById("timerCategory");
+    const timerSavedBtn = document.getElementById("timerSavedBtn");
+    const manageTimerCategoriesBtn = document.getElementById("manageTimerCategoriesBtn");
+    const countdownOptions = document.getElementById("countdownOptions");
+    const pomodoroMode = document.getElementById("pomodoroMode");
+    const pomodoroSettings = document.getElementById("pomodoroSettings");
+    const workMinutes = document.getElementById("workMinutes");
+    const breakMinutes = document.getElementById("breakMinutes");
+    const countdownMinutes = document.getElementById("countdownMinutes");
+    const timerDisplay = document.getElementById("timerDisplay");
+    const startPauseTimerBtn = document.getElementById("startPauseTimerBtn");
+    const resetTimerBtn = document.getElementById("resetTimerBtn");
+    const saveTimerBtn = document.getElementById("saveTimerBtn");
+    const breakTimerBox = document.getElementById("breakTimerBox");
+    const breakTimerText = document.getElementById("breakTimerText");
+    const progressRingBar = document.getElementById("progressRingBar");
+    const breakRingBar = document.getElementById("breakRingBar");
+
+    const timerCategoriesDialog = document.getElementById("timerCategoriesDialog");
+    const timerCategoriesManager = document.getElementById("timerCategoriesManager");
+    const newTimerCategoryName = document.getElementById("newTimerCategoryName");
+    const newTimerCategoryColor = document.getElementById("newTimerCategoryColor");
+    const addTimerCategoryBtn = document.getElementById("addTimerCategoryBtn");
+    const closeTimerCategoriesDialogBtn = document.getElementById("closeTimerCategoriesDialogBtn");
+
+    const savedTimesDialog = document.getElementById("savedTimesDialog");
+    const savedTimesList = document.getElementById("savedTimesList");
+    const closeSavedTimesDialogBtn = document.getElementById("closeSavedTimesDialogBtn");
+
+    const ringRadius = 90;
+    const ringCircumference = 2 * Math.PI * ringRadius;
+    progressRingBar.style.strokeDasharray = ringCircumference;
+    progressRingBar.style.strokeDashoffset = ringCircumference;
+
+    const breakRingRadius = 70;
+    const breakRingCircumference = 2 * Math.PI * breakRingRadius;
+    breakRingBar.style.strokeDasharray = breakRingCircumference;
+    breakRingBar.style.strokeDashoffset = breakRingCircumference;
+
+    function saveTimerData() {
+      localStorage.setItem("timerCategories", JSON.stringify(timerCategories));
+      localStorage.setItem("savedTimerSessions", JSON.stringify(savedTimerSessions));
+    }
+
+    function formatTime(totalSeconds) {
+      const hrs = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+      const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
+      const secs = String(totalSeconds % 60).padStart(2, "0");
+      return `${hrs}:${mins}:${secs}`;
+    }
+
+    function formatShortTime(totalSeconds) {
+      const mins = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+      const secs = String(totalSeconds % 60).padStart(2, "0");
+      return `${mins}:${secs}`;
+    }
+
+    function getTimerCategoryById(id) {
+      return timerCategories.find(cat => cat.id === Number(id));
+    }
+
+    function renderTimerCategories() {
+      timerCategory.innerHTML = "";
+      timerCategories.forEach(cat => {
+        const option = document.createElement("option");
+        option.value = cat.id;
+        option.textContent = cat.name;
+        timerCategory.appendChild(option);
+      });
+      updateTimerAccent();
+    }
+
+    function renderTimerCategoriesManager() {
+      timerCategoriesManager.innerHTML = "";
+
+      timerCategories.forEach(category => {
+        const row = document.createElement("div");
+        row.className = "category-row";
+
+        const nameInput = document.createElement("input");
+        nameInput.type = "text";
+        nameInput.value = category.name;
+
+        nameInput.addEventListener("change", () => {
+          category.name = nameInput.value.trim() || "Untitled";
+          saveTimerData();
+          renderTimerCategories();
+          renderTimerCategoriesManager();
+          renderSavedTimes();
+        });
+
+        const colorInput = document.createElement("input");
+        colorInput.type = "color";
+        colorInput.value = category.color;
+
+        colorInput.addEventListener("input", () => {
+          category.color = colorInput.value;
+          saveTimerData();
+          renderTimerCategories();
+          renderSavedTimes();
+          updateTimerAccent();
+        });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+
+        deleteBtn.addEventListener("click", () => {
+          const usedBySaved = savedTimerSessions.some(session => session.categoryId === category.id);
+          if (usedBySaved) {
+            alert("Delete saved times using this category first.");
+            return;
+          }
+
+          timerCategories = timerCategories.filter(cat => cat.id !== category.id);
+
+          if (timerCategories.length === 0) {
+            timerCategories.push({ id: Date.now(), name: "General", color: "#fd61fd" });
+          }
+
+          saveTimerData();
+          renderTimerCategories();
+          renderTimerCategoriesManager();
+          renderSavedTimes();
+        });
+
+        row.appendChild(nameInput);
+        row.appendChild(colorInput);
+        row.appendChild(deleteBtn);
+        timerCategoriesManager.appendChild(row);
+      });
+    }
+
+    function renderSavedTimes() {
+      savedTimesList.innerHTML = "";
+
+      if (savedTimerSessions.length === 0) {
+        savedTimesList.innerHTML = "<p>No saved times yet.</p>";
+        return;
+      }
+
+      savedTimerSessions.forEach(session => {
+        const category = getTimerCategoryById(session.categoryId);
+
+        const card = document.createElement("div");
+        card.className = "saved-time-card";
+        card.style.borderLeftColor = category ? category.color : "#ff88ff";
+
+        const title = document.createElement("div");
+        title.className = "saved-time-title";
+        title.textContent = `${category ? category.name : "Unknown"} • ${session.mode}`;
+
+        const sub = document.createElement("div");
+        sub.className = "saved-time-sub";
+        sub.textContent = `${formatTime(session.seconds)} saved`;
+
+        card.appendChild(title);
+        card.appendChild(sub);
+        savedTimesList.appendChild(card);
+      });
+    }
+
+    function updateModeUI() {
+      currentMode = timerMode.value;
+      countdownOptions.style.display = currentMode === "countdown" ? "block" : "none";
+      pomodoroSettings.style.display =
+        currentMode === "countdown" && pomodoroMode.checked ? "block" : "none";
+
+      stopTimer();
+
+      if (currentMode === "stopwatch") {
+        currentSeconds = 0;
+        totalCountdownSeconds = 0;
+        timerDisplay.textContent = "00:00:00";
+        progressRingBar.style.strokeDashoffset = ringCircumference;
+        breakRingBar.style.strokeDashoffset = breakRingCircumference;
+        breakTimerBox.classList.add("hidden");
+      } else {
+        resetTimer();
+      }
+
+      updateTimerAccent();
+    }
+
+    function updateTimerAccent() {
+      const category = getTimerCategoryById(timerCategory.value);
+      const color = category ? category.color : "#fd61fd";
+      progressRingBar.style.stroke = color;
+      breakRingBar.style.stroke = color;
+      timerDisplay.style.borderColor = color;
+    }
+
+    function updateProgressRing() {
+      if (currentMode !== "countdown" || totalCountdownSeconds <= 0) {
+        progressRingBar.style.strokeDashoffset = ringCircumference;
+        return;
+      }
+
+      const progress = currentSeconds / totalCountdownSeconds;
+      const offset = ringCircumference * (1 - progress);
+      progressRingBar.style.strokeDashoffset = offset;
+    }
+
+    function updateBreakRing() {
+      if (!isBreakActive || pomodoroBreakSeconds <= 0) {
+        breakRingBar.style.strokeDashoffset = breakRingCircumference;
+        return;
+      }
+
+      const progress = currentBreakSeconds / pomodoroBreakSeconds;
+      const offset = breakRingCircumference * (1 - progress);
+      breakRingBar.style.strokeDashoffset = offset;
+    }
+
+    function startTimer() {
+      if (isRunning) return;
+
+      if (currentMode === "countdown" && currentSeconds <= 0 && !isBreakActive) {
+        totalCountdownSeconds = Number(countdownMinutes.value) * 60;
+        currentSeconds = totalCountdownSeconds;
+        pomodoroEnabled = pomodoroMode.checked;
+        pomodoroWorkSeconds = Number(workMinutes.value) * 60;
+        pomodoroBreakSeconds = Number(breakMinutes.value) * 60;
+        elapsedWorkSinceBreak = 0;
+      }
+
+      if (currentMode === "countdown" && currentSeconds <= 0 && !isBreakActive) return;
+
+      isRunning = true;
+      startPauseTimerBtn.textContent = "Pause";
+
+      intervalId = setInterval(() => {
+        if (currentMode === "stopwatch") {
+          currentSeconds++;
+          timerDisplay.textContent = formatTime(currentSeconds);
+          return;
+        }
+
+        if (isBreakActive) {
+          if (currentBreakSeconds > 0) {
+            currentBreakSeconds--;
+            breakTimerText.textContent = formatShortTime(currentBreakSeconds);
+            updateBreakRing();
+          }
+
+          if (currentBreakSeconds <= 0) {
+            isBreakActive = false;
+            breakTimerBox.classList.add("hidden");
+            breakRingBar.style.strokeDashoffset = breakRingCircumference;
+          }
+
+          return;
+        }
+
+        if (currentSeconds > 0) {
+          currentSeconds--;
+          elapsedWorkSinceBreak++;
+          timerDisplay.textContent = formatTime(currentSeconds);
+          updateProgressRing();
+        }
+
+        if (
+          pomodoroMode.checked &&
+          currentSeconds > 0 &&
+          Number(workMinutes.value) > 0 &&
+          Number(breakMinutes.value) > 0 &&
+          elapsedWorkSinceBreak >= Number(workMinutes.value) * 60
+        ) {
+          isBreakActive = true;
+          currentBreakSeconds = Number(breakMinutes.value) * 60;
+          pomodoroBreakSeconds = Number(breakMinutes.value) * 60;
+          elapsedWorkSinceBreak = 0;
+          breakTimerBox.classList.remove("hidden");
+          breakTimerText.textContent = formatShortTime(currentBreakSeconds);
+          updateBreakRing();
+          return;
+        }
+
+        if (currentSeconds <= 0) {
+          currentSeconds = 0;
+          timerDisplay.textContent = "00:00:00";
+          updateProgressRing();
+          stopTimer();
+          isBreakActive = false;
+          breakTimerBox.classList.add("hidden");
+          breakRingBar.style.strokeDashoffset = breakRingCircumference;
+        }
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(intervalId);
+      intervalId = null;
+      isRunning = false;
+      startPauseTimerBtn.textContent = "Start";
+    }
+
+    function resetTimer() {
+      stopTimer();
+
+      isBreakActive = false;
+      currentBreakSeconds = 0;
+      elapsedWorkSinceBreak = 0;
+      breakTimerBox.classList.add("hidden");
+      breakTimerText.textContent = "00:00";
+      breakRingBar.style.strokeDashoffset = breakRingCircumference;
+
+      if (timerMode.value === "stopwatch") {
+        currentSeconds = 0;
+        totalCountdownSeconds = 0;
+        timerDisplay.textContent = "00:00:00";
+      } else {
+        totalCountdownSeconds = Number(countdownMinutes.value) * 60;
+        currentSeconds = totalCountdownSeconds;
+        timerDisplay.textContent = formatTime(currentSeconds);
+      }
+
+      updateProgressRing();
+      updateTimerAccent();
+    }
+
+    function saveCurrentSession() {
+      const secondsToSave =
+        currentMode === "stopwatch"
+          ? currentSeconds
+          : totalCountdownSeconds - currentSeconds;
+
+      if (secondsToSave <= 0) return;
+
+      savedTimerSessions.push({
+        id: Date.now(),
+        categoryId: Number(timerCategory.value),
+        mode: currentMode,
+        seconds: secondsToSave
+      });
+
+      saveTimerData();
+      renderSavedTimes();
+    }
+
+    timerMode.addEventListener("change", updateModeUI);
+    timerCategory.addEventListener("change", updateTimerAccent);
+
+    pomodoroMode.addEventListener("change", () => {
+      pomodoroSettings.style.display =
+        timerMode.value === "countdown" && pomodoroMode.checked ? "block" : "none";
+      resetTimer();
+    });
+
+    countdownMinutes.addEventListener("change", resetTimer);
+    workMinutes.addEventListener("change", resetTimer);
+    breakMinutes.addEventListener("change", resetTimer);
+
+    startPauseTimerBtn.addEventListener("click", () => {
+      if (isRunning) {
+        stopTimer();
+      } else {
+        startTimer();
+      }
+    });
+
+    resetTimerBtn.addEventListener("click", resetTimer);
+    saveTimerBtn.addEventListener("click", saveCurrentSession);
+
+    manageTimerCategoriesBtn.addEventListener("click", () => {
+      renderTimerCategoriesManager();
+      timerCategoriesDialog.showModal();
+    });
+
+    closeTimerCategoriesDialogBtn.addEventListener("click", () => {
+      timerCategoriesDialog.close();
+    });
+
+    addTimerCategoryBtn.addEventListener("click", () => {
+      const name = newTimerCategoryName.value.trim();
+      const color = newTimerCategoryColor.value;
+
+      if (!name) return;
+
+      timerCategories.push({
+        id: Date.now(),
+        name,
+        color
+      });
+
+      newTimerCategoryName.value = "";
+      newTimerCategoryColor.value = "#ff0000";
+      saveTimerData();
+      renderTimerCategories();
+      renderTimerCategoriesManager();
+    });
+
+    timerSavedBtn.addEventListener("click", () => {
+      renderSavedTimes();
+      savedTimesDialog.showModal();
+    });
+
+    closeSavedTimesDialogBtn.addEventListener("click", () => {
+      savedTimesDialog.close();
+    });
+
+    renderTimerCategories();
+    renderSavedTimes();
+    updateModeUI();
   }
 });
