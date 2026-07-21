@@ -1,25 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="app.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Planner - Home</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#ff6dff" />
 </head>
 <body>
-
   <nav class="navbar">
-    <a href="index.html" class="active">Home</a>
+    <a href="index.html">Home</a>
     <a href="lists.html">Lists</a>
     <a href="deadlines.html">Calendar</a>
     <a href="timer.html">Timer</a>
   </nav>
 
-  <div class="page-content">
-    <h1>Home Page</h1>
-    <p>Welcome to your student planner app.</p>
-  </div>
+  <main class="page-content">
+    <h1>Home</h1>
 
+    <section class="home-card">
+      <div class="section-header">
+        <h2>Closest Deadlines</h2>
+      </div>
+      <div id="homeDeadlinesList"></div>
+    </section>
+
+    <section class="home-card">
+      <div class="section-header">
+        <h2>Live Timer</h2>
+      </div>
+
+      <div class="home-timer-box">
+        <div id="homeTimerCategory" class="home-timer-category">No active timer</div>
+        <div id="homeTimerDisplay" class="home-timer-display">00:00:00</div>
+        <div id="homeBreakDisplay" class="home-break-display hidden">Break: 00:00</div>
+        <button id="homePauseTimerBtn" type="button">Pause Timer</button>
+      </div>
+    </section>
+
+    <section class="home-card">
+      <div class="section-header">
+        <h2>Colour Scheme</h2>
+      </div>
+      <div id="themeOptions" class="theme-options"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
 </body>
 </html>

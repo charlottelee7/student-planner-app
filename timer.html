@@ -96,12 +96,48 @@
     </div>
   </dialog>
 
-  <dialog id="savedTimesDialog">
+    <dialog id="savedTimesDialog">
     <h2>Saved Times</h2>
-    <div id="savedTimesList"></div>
-    <div class="dialog-buttons">
-      <button id="closeSavedTimesDialogBtn" type="button">Close</button>
+
+    <div class="saved-tabs">
+        <button id="sessionsTabBtn" class="active" type="button">Sessions</button>
+        <button id="statsTabBtn" type="button">Stats</button>
     </div>
-  </dialog>
+
+    <div id="sessionsTab">
+        <div id="savedTimesList"></div>
+    </div>
+
+    <div id="statsTab" class="hidden">
+        <div class="stats-top-controls">
+        <div class="stats-view-controls">
+            <button id="periodBackBtn" type="button">&larr;</button>
+            <select id="statsRangeSelect">
+            <option value="day">Day</option>
+            <option value="week">Week</option>
+            <option value="month">Month</option>
+            <option value="all">All Time</option>
+            </select>
+            <button id="periodForwardBtn" type="button">&rarr;</button>
+        </div>
+
+        <div class="stats-sub-controls">
+            <button id="subPeriodBackBtn" type="button">&larr;</button>
+            <span id="statsPeriodLabel">Today</span>
+            <button id="subPeriodForwardBtn" type="button">&rarr;</button>
+        </div>
+        </div>
+
+        <div id="statsAddTimeRow">
+        <button id="statsAddTimeBtn" type="button">Add Time</button>
+        </div>
+
+        <div id="statsBarsList"></div>
+    </div>
+
+    <div class="dialog-buttons">
+        <button id="closeSavedTimesDialogBtn" type="button">Close</button>
+    </div>
+    </dialog>
 </body>
 </html>

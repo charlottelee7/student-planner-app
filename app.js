@@ -1,4 +1,425 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const appThemes = [
+    {
+      id: "pink",
+      bgMain: "#ffebff",
+      bgSecondary: "#ffebff",
+      navBg: "#ff6dff",
+      navText: "#ffeaf7",
+      buttonBg: "#ff92ff",
+      buttonHover: "#e99ee9",
+      buttonText: "#ffffff",
+      cardBg: "#ffffff",
+      cardSoft: "rgba(255,255,255,0.65)",
+      textMain: "#333333",
+      textMuted: "#666666",
+      textSoft: "#777777",
+      borderSoft: "#cccccc",
+      accent: "#fd61fd",
+      accentSoft: "#ffb4ff",
+      accentPale: "#ffd5f7",
+      accentPale2: "#ffe5f7",
+      statsTrack: "#f2e9f9",
+      danger: "#8a63de",
+      important: "#ffdd00"
+    },
+    {
+      id: "blue",
+      bgMain: "#e3efff",
+      bgSecondary: "#f4f8ff",
+      navBg: "#5d8dff",
+      navText: "#eef4ff",
+      buttonBg: "#7fa6ff",
+      buttonHover: "#5f88e8",
+      buttonText: "#ffffff",
+      cardBg: "#ffffff",
+      cardSoft: "rgba(255,255,255,0.65)",
+      textMain: "#333333",
+      textMuted: "#666666",
+      textSoft: "#777777",
+      borderSoft: "#cccccc",
+      accent: "#5d8dff",
+      accentSoft: "#b8ccff",
+      accentPale: "#d9e5ff",
+      accentPale2: "#edf3ff",
+      statsTrack: "#e8efff",
+      danger: "#e28409",
+      important: "#ffd500"
+    },
+    {
+      id: "green",
+      bgMain: "#e3f8ea",
+      bgSecondary: "#f3fcf6",
+      navBg: "#46b96d",
+      navText: "#eefbf2",
+      buttonBg: "#63ca87",
+      buttonHover: "#44aa68",
+      buttonText: "#ffffff",
+      cardBg: "#ffffff",
+      cardSoft: "rgba(255,255,255,0.65)",
+      textMain: "#333333",
+      textMuted: "#666666",
+      textSoft: "#777777",
+      borderSoft: "#cccccc",
+      accent: "#46b96d",
+      accentSoft: "#a8e1ba",
+      accentPale: "#d9f1e1",
+      accentPale2: "#ecf9f0",
+      statsTrack: "#e5f4ea",
+      danger: "#e8e21d",
+      important: "#e100ff"
+    },
+    {
+      id: "purple",
+      bgMain: "#ffffff",
+      bgSecondary: "#ffffff",
+      navBg: "#d7d7d7",
+      navText: "#505050",
+      buttonBg: "#e2e2e2",
+      buttonHover: "#bfceff",
+      buttonText: "#505050",
+      cardBg: "#ececec",
+      cardSoft: "#f5f5f5",
+      textMain: "#505050",
+      textMuted: "#666666",
+      textSoft: "#777777",
+      borderSoft: "#cccccc",
+      accent: "#efefef",
+      accentSoft: "#f4f4f4",
+      accentPale: "#f4f4f4",
+      accentPale2: "#9d9d9d",
+      statsTrack: "#e1e1e1",
+      danger: "#d9534f",
+      important: "#ff3b3b"
+    },
+    {
+      id: "orange",
+      bgMain: "#eadbff",
+      bgSecondary: "#eadbff",
+      navBg: "#9e61f3",
+      navText: "#fdf0bb",
+      buttonBg: "#ae7ef2",
+      buttonHover: "#918d1e25",
+      buttonText: "#fffbec",
+      cardBg: "#ffffec",
+      cardSoft: "#fffec9",
+      textMain: "#720ca2",
+      textMuted: "#8c3ab2",
+      textSoft: "#9f40cb",
+      borderSoft: "#bd54ff",
+      accent: "#9e61f3",
+      accentSoft: "#b180f7",
+      accentPale: "#d3bdf3",
+      accentPale2: "#fff0e7",
+      statsTrack: "#fffef3",
+      danger: "#f88f43",
+      important: "#00f2ff"
+    },
+    {
+      id: "yellow",
+      bgMain: "#fff5d8",
+      bgSecondary: "#fffbee",
+      navBg: "#e0b400",
+      navText: "#fffbe6",
+      buttonBg: "#f0c63b",
+      buttonHover: "#c79f00",
+      buttonText: "#ffffff",
+      cardBg: "#ffffff",
+      cardSoft: "rgba(255,255,255,0.65)",
+      textMain: "#333333",
+      textMuted: "#666666",
+      textSoft: "#777777",
+      borderSoft: "#cccccc",
+      accent: "#e0b400",
+      accentSoft: "#f4df8a",
+      accentPale: "#fff0b8",
+      accentPale2: "#fff7da",
+      statsTrack: "#f8f0c7",
+      danger: "#d9534f",
+      important: "#ff3b3b"
+    },
+    {
+      id: "teal",
+      bgMain: "#ddf7f5",
+      bgSecondary: "#effcfb",
+      navBg: "#20b8b0",
+      navText: "#eafffb",
+      buttonBg: "#42ccc5",
+      buttonHover: "#17958e",
+      buttonText: "#ffffff",
+      cardBg: "#ffffff",
+      cardSoft: "rgba(255,255,255,0.65)",
+      textMain: "#333333",
+      textMuted: "#666666",
+      textSoft: "#777777",
+      borderSoft: "#cccccc",
+      accent: "#20b8b0",
+      accentSoft: "#9ce3de",
+      accentPale: "#d4f3f0",
+      accentPale2: "#e8faf8",
+      statsTrack: "#e0f4f2",
+      danger: "#d9534f",
+      important: "#ff3b3b"
+    },
+    {
+      id: "red",
+      bgMain: "#1d1d1d",
+      bgSecondary: "#1d1d1d",
+      navBg: "#131313",
+      navText: "#a9a9a9",
+      buttonBg: "#131313",
+      buttonHover: "#e2546ed0",
+      buttonText: "#b2b2b2",
+      cardBg: "#222222",
+      cardSoft: "#2b2b2b",
+      textMain: "#ababab",
+      textMuted: "#979797",
+      textSoft: "#a5a5a5",
+      borderSoft: "#ececec",
+      accent: "#e2546e",
+      accentSoft: "#634a4a",
+      accentPale: "#a28484",
+      accentPale2: "#fff0f0",
+      statsTrack: "#fbe5e5",
+      danger: "#e2546e",
+      important: "#3e19c4"
+    }
+  ];
+
+  function applyTheme(themeId) {
+    const theme = appThemes.find(t => t.id === themeId) || appThemes[0];
+    document.documentElement.style.setProperty("--bg-main", theme.bgMain);
+    document.documentElement.style.setProperty("--bg-secondary", theme.bgSecondary);
+    document.documentElement.style.setProperty("--nav-bg", theme.navBg);
+    document.documentElement.style.setProperty("--nav-text", theme.navText);
+    document.documentElement.style.setProperty("--button-bg", theme.buttonBg);
+    document.documentElement.style.setProperty("--button-hover", theme.buttonHover);
+    document.documentElement.style.setProperty("--button-text", theme.buttonText);
+    document.documentElement.style.setProperty("--card-bg", theme.cardBg);
+    document.documentElement.style.setProperty("--card-soft", theme.cardSoft);
+    document.documentElement.style.setProperty("--text-main", theme.textMain);
+    document.documentElement.style.setProperty("--text-muted", theme.textMuted);
+    document.documentElement.style.setProperty("--text-soft", theme.textSoft);
+    document.documentElement.style.setProperty("--border-soft", theme.borderSoft);
+    document.documentElement.style.setProperty("--accent", theme.accent);
+    document.documentElement.style.setProperty("--accent-soft", theme.accentSoft);
+    document.documentElement.style.setProperty("--accent-pale", theme.accentPale);
+    document.documentElement.style.setProperty("--accent-pale-2", theme.accentPale2);
+    document.documentElement.style.setProperty("--stats-track", theme.statsTrack);
+    document.documentElement.style.setProperty("--danger", theme.danger);
+    document.documentElement.style.setProperty("--important", theme.important);
+
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (metaTheme) {
+      metaTheme.setAttribute("content", theme.navBg);
+    }
+
+    localStorage.setItem("appTheme", theme.id);
+  }
+
+  applyTheme(localStorage.getItem("appTheme") || "pink");
+
+  function formatTime(totalSeconds) {
+    const safeSeconds = Math.max(0, Number(totalSeconds) || 0);
+    const hrs = String(Math.floor(safeSeconds / 3600)).padStart(2, "0");
+    const mins = String(Math.floor((safeSeconds % 3600) / 60)).padStart(2, "0");
+    const secs = String(safeSeconds % 60).padStart(2, "0");
+    return `${hrs}:${mins}:${secs}`;
+  }
+
+  function formatShortTime(totalSeconds) {
+    const safeSeconds = Math.max(0, Number(totalSeconds) || 0);
+    const mins = String(Math.floor(safeSeconds / 60)).padStart(2, "0");
+    const secs = String(safeSeconds % 60).padStart(2, "0");
+    return `${mins}:${secs}`;
+  }
+
+  function getTodayString() {
+    return new Date().toISOString().split("T")[0];
+  }
+
+  function getSharedTimerState() {
+    const state = JSON.parse(localStorage.getItem("timerSharedState")) || null;
+    if (!state) return null;
+
+    if (state.lastUpdatedAt && state.isRunning) {
+      const now = Date.now();
+      const diffSeconds = Math.floor((now - state.lastUpdatedAt) / 1000);
+
+      if (diffSeconds > 0) {
+        if (state.currentMode === "stopwatch") {
+          state.currentSeconds += diffSeconds;
+          state.lastUpdatedAt = now;
+          localStorage.setItem("timerSharedState", JSON.stringify(state));
+        } else {
+          let remainingDiff = diffSeconds;
+
+          while (remainingDiff > 0 && state.isRunning) {
+            if (state.isBreakActive) {
+              if (state.currentBreakSeconds > remainingDiff) {
+                state.currentBreakSeconds -= remainingDiff;
+                remainingDiff = 0;
+              } else {
+                remainingDiff -= state.currentBreakSeconds;
+                state.currentBreakSeconds = 0;
+                state.isBreakActive = false;
+              }
+            } else {
+              if (state.currentSeconds > remainingDiff) {
+                state.currentSeconds -= remainingDiff;
+                remainingDiff = 0;
+              } else {
+                remainingDiff -= state.currentSeconds;
+                state.currentSeconds = 0;
+                state.isRunning = false;
+              }
+            }
+          }
+
+          state.lastUpdatedAt = now;
+          localStorage.setItem("timerSharedState", JSON.stringify(state));
+        }
+      }
+    }
+
+    return state;
+  }
+
+  // =========================
+  // HOME PAGE
+  // =========================
+  const homeDeadlinesList = document.getElementById("homeDeadlinesList");
+
+  if (homeDeadlinesList) {
+    const homeTimerDisplay = document.getElementById("homeTimerDisplay");
+    const homeBreakDisplay = document.getElementById("homeBreakDisplay");
+    const homePauseTimerBtn = document.getElementById("homePauseTimerBtn");
+    const homeTimerCategory = document.getElementById("homeTimerCategory");
+    const themeOptions = document.getElementById("themeOptions");
+
+    function getDaysLeft(dateString) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const target = new Date(dateString);
+      target.setHours(0, 0, 0, 0);
+
+      const diff = target - today;
+      return Math.ceil(diff / (1000 * 60 * 60 * 24));
+    }
+
+    function renderHomeDeadlines() {
+      const deadlineTasks = JSON.parse(localStorage.getItem("deadlineTasks")) || [];
+      const deadlineCategories = JSON.parse(localStorage.getItem("deadlineCategories")) || [];
+
+      function getCategoryById(id) {
+        return deadlineCategories.find(cat => cat.id === id);
+      }
+
+      homeDeadlinesList.innerHTML = "";
+
+      const upcoming = [...deadlineTasks]
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .slice(0, 3);
+
+      if (upcoming.length === 0) {
+        homeDeadlinesList.innerHTML = "<p>No deadlines yet.</p>";
+        return;
+      }
+
+      upcoming.forEach(task => {
+        const category = getCategoryById(task.categoryId);
+        const daysLeft = getDaysLeft(task.date);
+
+        let countdownText = "";
+        if (daysLeft > 0) countdownText = `${daysLeft} days left`;
+        else if (daysLeft === 0) countdownText = "Today";
+        else countdownText = `${Math.abs(daysLeft)} days overdue`;
+
+        const item = document.createElement("div");
+        item.className = "home-deadline-item";
+
+        const title = document.createElement("div");
+        title.className = "home-deadline-title";
+        title.textContent = task.title;
+
+        const meta = document.createElement("div");
+        meta.className = "home-deadline-meta";
+        meta.textContent = `${task.date} • ${countdownText}${category ? ` • ${category.name}` : ""}`;
+
+        item.appendChild(title);
+        item.appendChild(meta);
+        homeDeadlinesList.appendChild(item);
+      });
+    }
+
+    function renderHomeTimer() {
+      const state = getSharedTimerState();
+
+      if (!state) {
+        homeTimerCategory.textContent = "No active timer";
+        homeTimerDisplay.textContent = "00:00:00";
+        homeBreakDisplay.classList.add("hidden");
+        return;
+      }
+
+      homeTimerCategory.textContent = state.categoryName || "Timer";
+      homeTimerDisplay.textContent = formatTime(state.currentSeconds || 0);
+
+      if (state.isBreakActive) {
+        homeBreakDisplay.classList.remove("hidden");
+        homeBreakDisplay.textContent = `Break: ${formatShortTime(state.currentBreakSeconds || 0)}`;
+      } else {
+        homeBreakDisplay.classList.add("hidden");
+      }
+    }
+
+    function renderThemeOptions() {
+      themeOptions.innerHTML = "";
+      const currentTheme = localStorage.getItem("appTheme") || "pink";
+
+      appThemes.forEach(theme => {
+        const swatch = document.createElement("button");
+        swatch.type = "button";
+        swatch.className = "theme-swatch";
+        if (theme.id === currentTheme) {
+          swatch.classList.add("active");
+        }
+
+        swatch.style.background = `linear-gradient(135deg, ${theme.bgMain}, ${theme.accent})`;
+
+        swatch.addEventListener("click", () => {
+          applyTheme(theme.id);
+          renderThemeOptions();
+        });
+
+        themeOptions.appendChild(swatch);
+      });
+    }
+
+    homePauseTimerBtn.addEventListener("click", () => {
+      const state = getSharedTimerState();
+      if (!state) return;
+
+      state.isRunning = false;
+      state.lastUpdatedAt = Date.now();
+      localStorage.setItem("timerSharedState", JSON.stringify(state));
+      renderHomeTimer();
+    });
+
+    window.addEventListener("storage", () => {
+      renderHomeTimer();
+      renderHomeDeadlines();
+      renderThemeOptions();
+    });
+
+    setInterval(renderHomeTimer, 1000);
+
+    renderHomeDeadlines();
+    renderHomeTimer();
+    renderThemeOptions();
+  }
+
   // =========================
   // LISTS PAGE
   // =========================
@@ -555,6 +976,10 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     let savedTimerSessions = JSON.parse(localStorage.getItem("savedTimerSessions")) || [];
+    savedTimerSessions = savedTimerSessions.map(session => ({
+      ...session,
+      date: session.date || getTodayString()
+    }));
 
     let intervalId = null;
     let isRunning = false;
@@ -562,12 +987,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let totalCountdownSeconds = 0;
     let currentMode = "stopwatch";
 
-    let pomodoroEnabled = false;
     let pomodoroWorkSeconds = 25 * 60;
     let pomodoroBreakSeconds = 5 * 60;
     let currentBreakSeconds = 0;
     let isBreakActive = false;
     let elapsedWorkSinceBreak = 0;
+
+    let savedTabView = "sessions";
+    let statsRange = "day";
+    let statsOffset = 0;
 
     const timerCategory = document.getElementById("timerCategory");
     const timerSavedBtn = document.getElementById("timerSavedBtn");
@@ -598,6 +1026,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const savedTimesList = document.getElementById("savedTimesList");
     const closeSavedTimesDialogBtn = document.getElementById("closeSavedTimesDialogBtn");
 
+    const sessionsTabBtn = document.getElementById("sessionsTabBtn");
+    const statsTabBtn = document.getElementById("statsTabBtn");
+    const sessionsTab = document.getElementById("sessionsTab");
+    const statsTab = document.getElementById("statsTab");
+    const statsRangeSelect = document.getElementById("statsRangeSelect");
+    const periodBackBtn = document.getElementById("periodBackBtn");
+    const periodForwardBtn = document.getElementById("periodForwardBtn");
+    const subPeriodBackBtn = document.getElementById("subPeriodBackBtn");
+    const subPeriodForwardBtn = document.getElementById("subPeriodForwardBtn");
+    const statsPeriodLabel = document.getElementById("statsPeriodLabel");
+    const statsBarsList = document.getElementById("statsBarsList");
+    const statsAddTimeBtn = document.getElementById("statsAddTimeBtn");
+    const statsAddTimeRow = document.getElementById("statsAddTimeRow");
+
     const ringRadius = 90;
     const ringCircumference = 2 * Math.PI * ringRadius;
     progressRingBar.style.strokeDasharray = ringCircumference;
@@ -613,21 +1055,116 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("savedTimerSessions", JSON.stringify(savedTimerSessions));
     }
 
-    function formatTime(totalSeconds) {
-      const hrs = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
-      const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
-      const secs = String(totalSeconds % 60).padStart(2, "0");
-      return `${hrs}:${mins}:${secs}`;
-    }
-
-    function formatShortTime(totalSeconds) {
-      const mins = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
-      const secs = String(totalSeconds % 60).padStart(2, "0");
-      return `${mins}:${secs}`;
-    }
-
     function getTimerCategoryById(id) {
       return timerCategories.find(cat => cat.id === Number(id));
+    }
+
+    function saveSharedTimerState() {
+      const category = getTimerCategoryById(timerCategory.value);
+
+      const sharedState = {
+        currentMode,
+        currentSeconds,
+        totalCountdownSeconds,
+        isRunning,
+        isBreakActive,
+        currentBreakSeconds,
+        categoryId: Number(timerCategory.value),
+        categoryName: category ? category.name : "Timer",
+        lastUpdatedAt: Date.now()
+      };
+
+      localStorage.setItem("timerSharedState", JSON.stringify(sharedState));
+    }
+
+    function syncFromSharedState() {
+      const shared = getSharedTimerState();
+      if (!shared) return;
+
+      currentMode = shared.currentMode || currentMode;
+      currentSeconds = Number(shared.currentSeconds) || 0;
+      totalCountdownSeconds = Number(shared.totalCountdownSeconds) || 0;
+      isRunning = Boolean(shared.isRunning);
+      isBreakActive = Boolean(shared.isBreakActive);
+      currentBreakSeconds = Number(shared.currentBreakSeconds) || 0;
+
+      if (shared.categoryId) {
+        timerCategory.value = shared.categoryId;
+      }
+
+      timerDisplay.textContent = formatTime(currentSeconds);
+
+      if (isBreakActive) {
+        breakTimerBox.classList.remove("hidden");
+        breakTimerText.textContent = formatShortTime(currentBreakSeconds);
+      } else {
+        breakTimerBox.classList.add("hidden");
+        breakTimerText.textContent = "00:00";
+      }
+
+      updateProgressRing();
+      updateBreakRing();
+      updateTimerAccent();
+      startPauseTimerBtn.textContent = isRunning ? "Pause" : "Start";
+    }
+
+    function getDateWithOffset(daysOffset) {
+      const date = new Date();
+      date.setDate(date.getDate() + daysOffset);
+      date.setHours(0, 0, 0, 0);
+      return date;
+    }
+
+    function formatDateLabel(date) {
+      return date.toISOString().split("T")[0];
+    }
+
+    function getStartOfWeek(date) {
+      const copy = new Date(date);
+      copy.setHours(0, 0, 0, 0);
+      const day = copy.getDay();
+      const diff = day === 0 ? -6 : 1 - day;
+      copy.setDate(copy.getDate() + diff);
+      return copy;
+    }
+
+    function getFilteredSessions() {
+      if (statsRange === "all") {
+        return [...savedTimerSessions];
+      }
+
+      if (statsRange === "day") {
+        const selectedDate = getDateWithOffset(statsOffset);
+        const target = formatDateLabel(selectedDate);
+        return savedTimerSessions.filter(session => session.date === target);
+      }
+
+      if (statsRange === "week") {
+        const weekDate = new Date();
+        weekDate.setDate(weekDate.getDate() + statsOffset * 7);
+        weekDate.setHours(0, 0, 0, 0);
+
+        const start = getStartOfWeek(weekDate);
+        const end = new Date(start);
+        end.setDate(end.getDate() + 6);
+        end.setHours(23, 59, 59, 999);
+
+        return savedTimerSessions.filter(session => {
+          const sessionDate = new Date(session.date);
+          return sessionDate >= start && sessionDate <= end;
+        });
+      }
+
+      if (statsRange === "month") {
+        const now = new Date();
+        const monthDate = new Date(now.getFullYear(), now.getMonth() + statsOffset, 1);
+        const year = monthDate.getFullYear();
+        const month = String(monthDate.getMonth() + 1).padStart(2, "0");
+
+        return savedTimerSessions.filter(session => session.date.startsWith(`${year}-${month}`));
+      }
+
+      return [...savedTimerSessions];
     }
 
     function renderTimerCategories() {
@@ -658,6 +1195,8 @@ document.addEventListener("DOMContentLoaded", () => {
           renderTimerCategories();
           renderTimerCategoriesManager();
           renderSavedTimes();
+          renderStatsBars();
+          saveSharedTimerState();
         });
 
         const colorInput = document.createElement("input");
@@ -669,6 +1208,7 @@ document.addEventListener("DOMContentLoaded", () => {
           saveTimerData();
           renderTimerCategories();
           renderSavedTimes();
+          renderStatsBars();
           updateTimerAccent();
         });
 
@@ -692,6 +1232,7 @@ document.addEventListener("DOMContentLoaded", () => {
           renderTimerCategories();
           renderTimerCategoriesManager();
           renderSavedTimes();
+          renderStatsBars();
         });
 
         row.appendChild(nameInput);
@@ -704,17 +1245,24 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderSavedTimes() {
       savedTimesList.innerHTML = "";
 
-      if (savedTimerSessions.length === 0) {
-        savedTimesList.innerHTML = "<p>No saved times yet.</p>";
+      const filteredSessions = getFilteredSessions().sort((a, b) => b.id - a.id);
+
+      if (filteredSessions.length === 0) {
+        savedTimesList.innerHTML = "<p>No saved times for this period.</p>";
         return;
       }
 
-      savedTimerSessions.forEach(session => {
+      filteredSessions.forEach(session => {
         const category = getTimerCategoryById(session.categoryId);
 
-        const card = document.createElement("div");
-        card.className = "saved-time-card";
-        card.style.borderLeftColor = category ? category.color : "#ff88ff";
+        const row = document.createElement("div");
+        row.className = "saved-session-row";
+        row.style.borderLeftColor = category ? category.color : "var(--accent-soft)";
+
+        const top = document.createElement("div");
+        top.className = "saved-session-top";
+
+        const info = document.createElement("div");
 
         const title = document.createElement("div");
         title.className = "saved-time-title";
@@ -722,12 +1270,203 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const sub = document.createElement("div");
         sub.className = "saved-time-sub";
-        sub.textContent = `${formatTime(session.seconds)} saved`;
+        sub.textContent = `${formatTime(session.seconds)} • ${session.date}`;
 
-        card.appendChild(title);
-        card.appendChild(sub);
-        savedTimesList.appendChild(card);
+        info.appendChild(title);
+        info.appendChild(sub);
+
+        const actions = document.createElement("div");
+        actions.className = "saved-session-actions";
+
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.addEventListener("click", () => editSavedSession(session.id));
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "X";
+        deleteBtn.addEventListener("click", () => deleteSavedSession(session.id));
+
+        actions.appendChild(editBtn);
+        actions.appendChild(deleteBtn);
+
+        top.appendChild(info);
+        top.appendChild(actions);
+        row.appendChild(top);
+
+        savedTimesList.appendChild(row);
       });
+    }
+
+    function deleteSavedSession(sessionId) {
+      savedTimerSessions = savedTimerSessions.filter(session => session.id !== sessionId);
+      saveTimerData();
+      renderSavedTimes();
+      renderStatsBars();
+    }
+
+    function editSavedSession(sessionId) {
+      const session = savedTimerSessions.find(s => s.id === sessionId);
+      if (!session) return;
+
+      const currentMinutes = Math.round(session.seconds / 60);
+      const newMinutes = prompt("Edit time in minutes:", currentMinutes);
+
+      if (newMinutes === null) return;
+
+      const parsedMinutes = Number(newMinutes);
+
+      if (Number.isNaN(parsedMinutes) || parsedMinutes < 0) {
+        alert("Enter a valid number of minutes.");
+        return;
+      }
+
+      session.seconds = Math.round(parsedMinutes * 60);
+      saveTimerData();
+      renderSavedTimes();
+      renderStatsBars();
+    }
+
+    function renderStatsBars() {
+      statsBarsList.innerHTML = "";
+
+      const filteredSessions = getFilteredSessions();
+      const totalsByCategory = {};
+
+      filteredSessions.forEach(session => {
+        if (!totalsByCategory[session.categoryId]) {
+          totalsByCategory[session.categoryId] = 0;
+        }
+        totalsByCategory[session.categoryId] += session.seconds;
+      });
+
+      const entries = Object.entries(totalsByCategory);
+
+      if (entries.length === 0) {
+        statsBarsList.innerHTML = "<p>No category totals for this period.</p>";
+        return;
+      }
+
+      const maxSeconds = Math.max(...entries.map(entry => entry[1]));
+
+      entries.forEach(([categoryId, totalSeconds]) => {
+        const category = getTimerCategoryById(Number(categoryId));
+        const color = category ? category.color : "#ff88ff";
+        const name = category ? category.name : "Unknown";
+        const widthPercent = maxSeconds > 0 ? (totalSeconds / maxSeconds) * 100 : 0;
+
+        const card = document.createElement("div");
+        card.className = "stats-bar-card";
+
+        const top = document.createElement("div");
+        top.className = "stats-bar-top";
+
+        const left = document.createElement("div");
+        left.textContent = name;
+
+        const right = document.createElement("div");
+        right.textContent = formatTime(totalSeconds);
+
+        const track = document.createElement("div");
+        track.className = "stats-bar-track";
+
+        const fill = document.createElement("div");
+        fill.className = "stats-bar-fill";
+        fill.style.width = `${widthPercent}%`;
+        fill.style.backgroundColor = color;
+
+        track.appendChild(fill);
+        top.appendChild(left);
+        top.appendChild(right);
+        card.appendChild(top);
+        card.appendChild(track);
+
+        statsBarsList.appendChild(card);
+      });
+    }
+
+    function updateStatsPeriodLabel() {
+      if (statsRange === "all") {
+        statsPeriodLabel.textContent = "All Time";
+        periodBackBtn.classList.add("hidden");
+        periodForwardBtn.classList.add("hidden");
+        subPeriodBackBtn.classList.add("hidden");
+        subPeriodForwardBtn.classList.add("hidden");
+        statsAddTimeRow.classList.add("hidden");
+        return;
+      }
+
+      periodBackBtn.classList.remove("hidden");
+      periodForwardBtn.classList.remove("hidden");
+      subPeriodBackBtn.classList.remove("hidden");
+      subPeriodForwardBtn.classList.remove("hidden");
+
+      if (statsRange === "day") {
+        const selectedDate = getDateWithOffset(statsOffset);
+        statsPeriodLabel.textContent = formatDateLabel(selectedDate);
+        statsAddTimeRow.classList.remove("hidden");
+      } else if (statsRange === "week") {
+        const weekDate = new Date();
+        weekDate.setDate(weekDate.getDate() + statsOffset * 7);
+        const start = getStartOfWeek(weekDate);
+        const end = new Date(start);
+        end.setDate(end.getDate() + 6);
+        statsPeriodLabel.textContent = `${formatDateLabel(start)} to ${formatDateLabel(end)}`;
+        statsAddTimeRow.classList.add("hidden");
+      } else if (statsRange === "month") {
+        const now = new Date();
+        const monthDate = new Date(now.getFullYear(), now.getMonth() + statsOffset, 1);
+        statsPeriodLabel.textContent = monthDate.toLocaleString("en-GB", {
+          month: "long",
+          year: "numeric"
+        });
+        statsAddTimeRow.classList.add("hidden");
+      }
+    }
+
+    function setSavedTab(view) {
+      savedTabView = view;
+
+      if (view === "sessions") {
+        sessionsTab.classList.remove("hidden");
+        statsTab.classList.add("hidden");
+        sessionsTabBtn.classList.add("active");
+        statsTabBtn.classList.remove("active");
+      } else {
+        sessionsTab.classList.add("hidden");
+        statsTab.classList.remove("hidden");
+        sessionsTabBtn.classList.remove("active");
+        statsTabBtn.classList.add("active");
+        updateStatsPeriodLabel();
+        renderStatsBars();
+      }
+    }
+
+    function addManualTimeToDay() {
+      if (statsRange !== "day") return;
+
+      const minutes = prompt("How many minutes do you want to add?");
+      if (minutes === null) return;
+
+      const parsedMinutes = Number(minutes);
+
+      if (Number.isNaN(parsedMinutes) || parsedMinutes <= 0) {
+        alert("Enter a valid number of minutes.");
+        return;
+      }
+
+      const selectedDate = formatDateLabel(getDateWithOffset(statsOffset));
+
+      savedTimerSessions.push({
+        id: Date.now(),
+        categoryId: Number(timerCategory.value),
+        mode: "manual",
+        seconds: Math.round(parsedMinutes * 60),
+        date: selectedDate
+      });
+
+      saveTimerData();
+      renderSavedTimes();
+      renderStatsBars();
     }
 
     function updateModeUI() {
@@ -750,6 +1489,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       updateTimerAccent();
+      saveSharedTimerState();
     }
 
     function updateTimerAccent() {
@@ -788,7 +1528,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (currentMode === "countdown" && currentSeconds <= 0 && !isBreakActive) {
         totalCountdownSeconds = Number(countdownMinutes.value) * 60;
         currentSeconds = totalCountdownSeconds;
-        pomodoroEnabled = pomodoroMode.checked;
         pomodoroWorkSeconds = Number(workMinutes.value) * 60;
         pomodoroBreakSeconds = Number(breakMinutes.value) * 60;
         elapsedWorkSinceBreak = 0;
@@ -798,11 +1537,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       isRunning = true;
       startPauseTimerBtn.textContent = "Pause";
+      saveSharedTimerState();
 
       intervalId = setInterval(() => {
+        if (!isRunning) return;
+
         if (currentMode === "stopwatch") {
           currentSeconds++;
           timerDisplay.textContent = formatTime(currentSeconds);
+          saveSharedTimerState();
           return;
         }
 
@@ -811,12 +1554,14 @@ document.addEventListener("DOMContentLoaded", () => {
             currentBreakSeconds--;
             breakTimerText.textContent = formatShortTime(currentBreakSeconds);
             updateBreakRing();
+            saveSharedTimerState();
           }
 
           if (currentBreakSeconds <= 0) {
             isBreakActive = false;
             breakTimerBox.classList.add("hidden");
             breakRingBar.style.strokeDashoffset = breakRingCircumference;
+            saveSharedTimerState();
           }
 
           return;
@@ -827,6 +1572,7 @@ document.addEventListener("DOMContentLoaded", () => {
           elapsedWorkSinceBreak++;
           timerDisplay.textContent = formatTime(currentSeconds);
           updateProgressRing();
+          saveSharedTimerState();
         }
 
         if (
@@ -843,6 +1589,7 @@ document.addEventListener("DOMContentLoaded", () => {
           breakTimerBox.classList.remove("hidden");
           breakTimerText.textContent = formatShortTime(currentBreakSeconds);
           updateBreakRing();
+          saveSharedTimerState();
           return;
         }
 
@@ -854,6 +1601,7 @@ document.addEventListener("DOMContentLoaded", () => {
           isBreakActive = false;
           breakTimerBox.classList.add("hidden");
           breakRingBar.style.strokeDashoffset = breakRingCircumference;
+          saveSharedTimerState();
         }
       }, 1000);
     }
@@ -863,6 +1611,7 @@ document.addEventListener("DOMContentLoaded", () => {
       intervalId = null;
       isRunning = false;
       startPauseTimerBtn.textContent = "Start";
+      saveSharedTimerState();
     }
 
     function resetTimer() {
@@ -887,6 +1636,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       updateProgressRing();
       updateTimerAccent();
+      saveSharedTimerState();
     }
 
     function saveCurrentSession() {
@@ -901,15 +1651,21 @@ document.addEventListener("DOMContentLoaded", () => {
         id: Date.now(),
         categoryId: Number(timerCategory.value),
         mode: currentMode,
-        seconds: secondsToSave
+        seconds: secondsToSave,
+        date: getTodayString()
       });
 
       saveTimerData();
       renderSavedTimes();
+      renderStatsBars();
     }
 
     timerMode.addEventListener("change", updateModeUI);
-    timerCategory.addEventListener("change", updateTimerAccent);
+
+    timerCategory.addEventListener("change", () => {
+      updateTimerAccent();
+      saveSharedTimerState();
+    });
 
     pomodoroMode.addEventListener("change", () => {
       pomodoroSettings.style.display =
@@ -958,10 +1714,17 @@ document.addEventListener("DOMContentLoaded", () => {
       saveTimerData();
       renderTimerCategories();
       renderTimerCategoriesManager();
+      saveSharedTimerState();
     });
 
     timerSavedBtn.addEventListener("click", () => {
+      statsRange = "day";
+      statsOffset = 0;
+      statsRangeSelect.value = "day";
+      setSavedTab("sessions");
+      updateStatsPeriodLabel();
       renderSavedTimes();
+      renderStatsBars();
       savedTimesDialog.showModal();
     });
 
@@ -969,8 +1732,69 @@ document.addEventListener("DOMContentLoaded", () => {
       savedTimesDialog.close();
     });
 
+    sessionsTabBtn.addEventListener("click", () => {
+      setSavedTab("sessions");
+      renderSavedTimes();
+    });
+
+    statsTabBtn.addEventListener("click", () => {
+      setSavedTab("stats");
+    });
+
+    statsRangeSelect.addEventListener("change", () => {
+      statsRange = statsRangeSelect.value;
+      statsOffset = 0;
+      updateStatsPeriodLabel();
+      renderSavedTimes();
+      renderStatsBars();
+    });
+
+    periodBackBtn.addEventListener("click", () => {
+      statsOffset--;
+      updateStatsPeriodLabel();
+      renderSavedTimes();
+      renderStatsBars();
+    });
+
+    periodForwardBtn.addEventListener("click", () => {
+      statsOffset++;
+      updateStatsPeriodLabel();
+      renderSavedTimes();
+      renderStatsBars();
+    });
+
+    subPeriodBackBtn.addEventListener("click", () => {
+      statsOffset--;
+      updateStatsPeriodLabel();
+      renderSavedTimes();
+      renderStatsBars();
+    });
+
+    subPeriodForwardBtn.addEventListener("click", () => {
+      statsOffset++;
+      updateStatsPeriodLabel();
+      renderSavedTimes();
+      renderStatsBars();
+    });
+
+    statsAddTimeBtn.addEventListener("click", addManualTimeToDay);
+
+    window.addEventListener("storage", () => {
+      const shared = getSharedTimerState();
+      if (!shared) return;
+
+      if (shared.isRunning === false && isRunning) {
+        stopTimer();
+      } else {
+        syncFromSharedState();
+      }
+    });
+
     renderTimerCategories();
     renderSavedTimes();
+    renderStatsBars();
     updateModeUI();
+    updateStatsPeriodLabel();
+    syncFromSharedState();
   }
 });
